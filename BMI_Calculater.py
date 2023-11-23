@@ -1,5 +1,6 @@
 from tkinter import *
 
+# FONTs
 FONT = ("Bahnschrift", 11, "normal")
 FONT2 = ("Arial", 9, "normal")
 
@@ -51,25 +52,42 @@ h_entry = Entry(window, validate="key", validatecommand=(validation, '%S'), widt
 h_entry.pack()
 
 
-bmi_label = Label(text="")
+bmi_label = None
 # calculate func
 def calculate():
     h = h_entry.get()
     w = w_entry.get()
     bmi = float(w) / ((float(h) / 100)**2)
 
-    if bmi <= 18.4:
-        bmi_label = Label(text="Your BMI {}.Skinny boy-h.".format(format(bmi, '.1f')), font=FONT2)
-        bmi_label.pack()
-    elif bmi >= 18.5 and bmi <= 24.9:
-        bmi_label = Label(text=f"Your BMI {format(bmi, '.1f')}. Normal.", font=FONT2)
-        bmi_label.pack()
-    elif bmi >= 25.0 and bmi <= 39.9:
-        bmi_label = Label(text="Your BMI {}. Overweight.".format(format(bmi, '.1f')), font=FONT2)
-        bmi_label.pack()
+    global bmi_label
+
+    if bmi_label is not None:
+        bmi_label.destroy()
+        if bmi <= 18.4:
+            bmi_label = Label(text="Your BMI {}.Skinny boy-h.".format(format(bmi, '.1f')), font=FONT2)
+            bmi_label.pack()
+        elif bmi >= 18.5 and bmi <= 24.9:
+            bmi_label = Label(text=f"Your BMI {format(bmi, '.1f')}. Normal.", font=FONT2)
+            bmi_label.pack()
+        elif bmi >= 25.0 and bmi <= 39.9:
+            bmi_label = Label(text="Your BMI {}. Overweight.".format(format(bmi, '.1f')), font=FONT2)
+            bmi_label.pack()
+        else:
+            bmi_label = Label(text="Your BMI ?. Sorry we can't calculate. Lose some weight and try again.", font=FONT2)
+            bmi_label.pack()
     else:
-        bmi_label = Label(text="Your BMI ?. Sorry we can't calculate. Lose some weight and try again.", font=FONT2)
-        bmi_label.pack()
+        if bmi <= 18.4:
+            bmi_label = Label(text="Your BMI {}.Skinny boy-h.".format(format(bmi, '.1f')), font=FONT2)
+            bmi_label.pack()
+        elif bmi >= 18.5 and bmi <= 24.9:
+            bmi_label = Label(text=f"Your BMI {format(bmi, '.1f')}. Normal.", font=FONT2)
+            bmi_label.pack()
+        elif bmi >= 25.0 and bmi <= 39.9:
+            bmi_label = Label(text="Your BMI {}. Overweight.".format(format(bmi, '.1f')), font=FONT2)
+            bmi_label.pack()
+        else:
+            bmi_label = Label(text="Your BMI ?. Sorry we can't calculate. Lose some weight and try again.", font=FONT2, wraplength=200)
+            bmi_label.pack()
 
 # calculate button
 calculate_button = Button(text="Calculate", command=calculate, borderwidth=0)
