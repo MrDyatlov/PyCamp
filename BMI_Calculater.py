@@ -73,7 +73,7 @@ def calculate():
             bmi_label = Label(text="Your BMI {}. Overweight.".format(format(bmi, '.1f')), font=FONT2)
             bmi_label.pack()
         else:
-            bmi_label = Label(text="Your BMI ?. Sorry we can't calculate. Lose some weight and try again.", font=FONT2)
+            bmi_label = Label(text="Your BMI ?. Sorry we can't calculate. Lose some weight and try again.", font=FONT2, wraplength=200)
             bmi_label.pack()
     else:
         if bmi <= 18.4:
