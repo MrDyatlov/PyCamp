@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load mathfilters %}
+
+{% block Title %}
+      <title>Basket</title>
+{% endblock Title %}
+
+
+{% block BODY %}
+      {% include "navbar.html" %}
+
+      <div class="container">
+        <a class="btn btn-outline-dark" href="{% url 'PRODUCTS:products' %}"><i class="fa fa-arrow-left" aria-hidden="true"></i>Continue Shopping</a>
+        {% if products %}
+        {% for product_ in products %}
+            <div class="cart-row" id="product-id-{{ product_.product.id }}">
+                <div style="flex: 2"><img class="cart-product-image" style="padding:10px" src="{{ product_.product.product_image.url }}" alt=""></div>
+                <div style="flex: 2">{{ product_.product.product_title }}</div>
+                <div style="flex: 1">₺ {{ product_.product.product_price }}</div>
+                <div style="flex: 1;">
+                    <p class="quantity">{{ product_.amount }} Piece</p>
+                    <div class="">
+                        <button class="btn btn-success update-cart-amount" data-product="{{ product_.product.id }}" data-action="add" ><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        <button class="btn btn-danger update-cart-amount" data-product="{{ product_.product.id }}" data-action="remove"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div style="flex: 1"><strong><h3>
+                    {% with amount=product_.amount price=product_.product.product_price %}
+                    {{ amount|mul:price }}
+                    {% endwith %}
+                </h3></strong></div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="bg text-center p-3 mb-2" style="border-radius: 20px">
+            <h3 class="text-dark">No products in your basket.</h3>
+                <a href="{% url 'PRODUCTS:products' %}" class="btn btn-primary" style="border-radius: 10px"><i aria-hidden="true"></i>Continue Shopping</a>
+            </div>
+         {% endif %}
+            <div class="row" id="cartItemId" style="margin-top: 20px">
+                <div class="col-lg-12">
+                    <div class="box-element">
+                        <br>
+                        <br>
+                        <table class="table">
+                            <tr>
+                                <th><h5>Products: <strong>
+                                    {{ products |length }}
+                                </strong></h5></th>
+                                <th><h5>Total: <strong>₺ {{ total }}</strong></h5></th>
+                                <th>{% if products %}
+                                    <a style="float: right;margin:5px" class="btn btn-success" href="{% url 'USERAPP:checkout' %}"><i class="fa fa-credit-card" aria-hidden="true"></i>Make Payment</a>
+                                    {% endif %}
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                  
+                </div>
+            </div>
+      {% if messages %}
+            {% for message in messages %}
+                  <div {% if message.tags %} class="alert alert-{{ message.tags }} m-3 p-3 rounded" style="position:fixed;top: 0px;left: 0px;width: 100%;z-index: 9999;border-radius: 0px" {% endif %}><i class="fa fa-cart-plus" aria-hidden="true"></i>{{ message }}</div>
+            {% endfor %}
+      {% endif %}
+{% endblock BODY %}

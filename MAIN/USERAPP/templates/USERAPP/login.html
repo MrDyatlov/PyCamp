@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+
+{% block Title %}
+      <title>LogIn</title>
+{% endblock Title %}
+
+
+{% block BODY %}
+      {% include "navbar.html" %}
+      <section>
+            {% if messages %}
+                  {% for message in messages %}
+                  <div style="color: red;" {% if message.tags %} class="alert alert-{{ message.tags }} m-3 p-3 rounded"{% endif %}><i
+                  class="fa fa-check" aria-hidden="true"></i> {{ message }}</div>
+                  {% endfor %}
+            {% endif %}
+
+            <div class="container">
+                  <form action="" method="POST">
+                        {% csrf_token %}
+                        {% for field in form %}
+                              <div class="mb-3">
+                                    {{ field.label }}
+                              </div>
+                              <div class="mb-3">
+                                    {{ field }}
+                              </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" style="width: 75px; margin-top: 10px;">LogIn</button>
+                  </form>
+            </div>
+      </section>
+{% endblock BODY %}

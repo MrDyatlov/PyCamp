@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+
+{% block Title %}
+      <title>Favorites</title>
+{% endblock Title %}
+
+
+{% block BODY %}
+      {% include "navbar.html" %}
+      <section>
+            {% if messages %}
+                  {% for message in messages %}
+                  <div {% if message.tags %} class="alert alert-{{ message.tags }} m-3 p-3 rounded"{% endif %}><i
+                              class="fa fa-check" aria-hidden="true"></i>{{ message }}</div>
+                  {% endfor %}
+            {% endif %}
+            {% if favorites %}
+                  {% for favorite in favorites %}
+                        <div id="product-id-{{ favorite.product.id }}">
+                              <div class="col-md-3">
+                                    <img src="{{ favorite.product.product_image.url }}" alt="Product Image">
+                              </div>
+                        </div>
+                        <div class="col-md-6">
+                              <h5>
+                                    {{ favorite.product.product_title }}
+                              </h5>
+                              <div>
+                                    {{ favorite.product.product_description }}
+                              </div>
+                        </div>
+                        <div class="col-md-3">
+                              <h4>
+                                    {{ favorite.product.product_price }}
+                              </h4>
+                        </div>
+
+                        {% if favorite.product.product_shipping == 0 %}
+                          
+                        {% else %}
+                              <h6 class="text-success">Free Cargo</h6>
+                        {% endif %}
+
+                        <div>
+                              <div>
+                                    <a href="">Details</a>
+                              </div>
+                              <div>
+                                    <button class="btn btn-outline-primary btn-sm mt-2 update-cart" data-product="{{ favorite.product.id }}" data-action="add" type="submit"><i class="fa fa-cart-plus"></i>Add to Basket</button>
+                              </div>
+                              <div>
+                                    <button class="btn btn-outline-danger btn-sm mt-2 update-favorite" data-product="{{ favorite.product.id }}" data-action="remove" type="submit"><i class="fa fa-heart"></i>Remove</button>
+                              </div>
+                        </div>
+                  {% endfor %}
+            {% else %}
+                  <h3 class="text-center">You Don't Have Any Favorite Products</h3>
+                  <div class="text-center"><br>
+                        <button class="btn btn-primary"><a href="{% url 'PRODUCTS:products' %}" style="text-decoration: none;color: white">Continue Shopping</a></button>
+                  </div>
+            {% endif %}
+      </section>
+{% endblock BODY %}

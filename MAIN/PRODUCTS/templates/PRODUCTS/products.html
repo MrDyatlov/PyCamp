@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+
+{% block Title %}
+      <title>Products</title>
+{% endblock Title %}
+
+{% block CSS %}
+  
+{% endblock CSS %}
+
+
+{% block BODY %}
+      {% include "navbar.html" %}
+      <section>
+            {% if messages %}
+                  {% for message in messages %}
+                        <div {% if message.tags %} class="alert alert-{{ message.tags }} m-3 p-3 rounded" style="position: fixed; top: 0px; left: 0px; width: 100%; z-index: 9999; border-radius: 0px;" {% endif %}>{{ message }}</div>
+                  {% endfor %}
+            {% endif %}
+            {% if products %}
+              
+            
+            <div class="container">
+                  {% for product in products %}
+                        <div class="col-lg-4" style="margin-bottom: 20px;">
+                              <img src="{{ product.product_image.url }}" alt="Product Image" class="thumbnail" style="border-top-left-radius: 10px;border-top-right-radius: 10px">
+                              <div class="box-element">
+                                    <h6><strong>{{ product.product_title }}</strong></h6>
+                                    {% if product.product_shipping == 0 %}
+                                          <h6 class="text-danger">Cargo at buyer's expense.</h6>
+                                    {% else %}
+                                          <h6 class="text-success">Free Cargo</h6>
+                                    {% endif %}
+                                    <hr>
+                                    <span style="display: block;" class="text-secondary">{{ product.product_description|truncatechars:120 }}</span>
+                                    <button class="btn btn-outline-success update-cart" data-product="{{ product.id }}" data-action="add"><i class="fa fa-curte-plus" aria-hidden="true"></i>Add to Basket</button>
+                                    <button class="btn btn-info" style="display: inline-block; width: 25%;"><strong>${{ product.product_price }}</strong></button>
+                                    <button class="btn btn-primary" style="width: 30%"><a href="{% url 'PRODUCTS:product-details' product.slug %}" style="text-decoration: none;color: white"><i class="fa fa-list-alt" aria-hidden="true"></i>Details</a></button>
+                                    <button class="btn btn-outline-danger update-favorite" style="width: 10%" data-pro="{{ product.id }}" data-action="add"><i class="fa fa-heart" aria-hidden="true"></i></button>
+                              </div>
+                        </div>
+                  {% endfor %}
+
+                  <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                           {% if products.has_previous %}
+                               <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a></li>
+                               <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">{{ products.previous_page_number }}</a></li>
+                           {% else %}
+                               <li class="page-item disabled"><a class="page-link">Önceki</a></li>
+                           {% endif %}
+                               <li class="page-item disabled"><a class="page-link">{{ products.number }}</a></li>
+                           {% if products.has_next %}
+                               <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">{{ products.next_page_number }}</a></li>
+                               <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+                           {% else %}
+                               <li class="page-item disabled"><a class="page-link" href="">Sonraki</a></li>
+                           {% endif %}
+                        </ul>
+                  </nav>
+            </div>
+            {% else %}
+                  No products found!
+            {% endif %}
+      </section>
+{% endblock BODY %}

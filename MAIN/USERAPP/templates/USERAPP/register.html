@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+
+{% block Title %}
+      <title>Register</title>
+{% endblock Title %}
+
+
+{% block BODY %}
+      {% include "navbar.html" %}
+      <section>
+                  {% if messages %}
+                        {% for message in messages %}
+                              {% if message.tags == error %}
+                                    <div {% if message.tags %} class="alert alert-danger m-3 p-3 rounded"{% endif %}>
+                                    <i class="fa fa-check" aria-hidden="true"></i> {{ message }}</div>
+                              {% else %}
+                                    <div {% if message.tags %} class="alert alert-{{ message.tags }} m-3 p-3 rounded"{% endif %}>
+                                    <i class="fa fa-check" aria-hidden="true"></i> {{ message }}</div>
+                              {% endif %}
+                        {% endfor %}  
+                  {% endif %}
+
+                  
+                  <div class="container">
+                        {% if form.non_field_errors %}
+                              <div class="alert alert-danger">{{ form.non_field_errors.as_text }}</div>
+                        {% endif %}
+                        <form method="POST">
+                              {% csrf_token %}
+                              {% for field in form %}
+                                    <div class="mb-3">
+                                          {{ field.label }}
+                                    </div>
+                                    <div class="mb-3">
+                                          {{ field }}
+                                    </div>
+                                    {% if field.errors %}
+                                          {% for error in field.errors %}
+                                                <span></span>
+                                          {% endfor %}
+                                    {% endif %}
+                              {% endfor %}
+                              <button type="submit" class="btn btn-primary" >Register</button>
+                        </form>
+                  </div>
+      </section>
+{% endblock BODY %}

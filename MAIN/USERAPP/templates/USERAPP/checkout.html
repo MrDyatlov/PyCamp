@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block Title %}
+    <title>Main Page</title>
+{% endblock Title %}
+
+{% block BODY %}
+    {% include 'navbar.html' %}
+    {% if messages %}
+        {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{ message.tags }} m-3 p-3 rounded"{% endif %}><i
+                    class="fa fa-check" aria-hidden="true"></i> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="container" style="padding-top: 20px;">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="box-element" id="form-wrapper">
+
+
+                    <label>Name on The Card</label><input class="form-control" placeholder="Jhone Doe">
+                    <label>Card Number</label><input class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX">
+                    <label>Expiration Date</label><input class="form-control" placeholder="12/2027">
+                    <label>CVV Code</label><input class="form-control" placeholder="123">
+
+
+                    <div id="shipping-info">
+                        <hr>
+                        <p>&nbsp; Adress:</p>
+                        <div class="">
+                            <select style="cursor: pointer" class="custom-select" id="inputGroupSelect01">
+                                <option style="cursor: pointer" selected id="addressList">Adress Selection</option>
+                                {% for Adress in customer_adress %}
+                                    <option style="cursor: pointer" value="{{ Adress.id }}" name=""{{ Adress.adress_title }}>{{ Address.adress_title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <a href="{% url 'ORDERS:payment' %}" class="btn btn-success btn-block"><i aria-hidden="true"></i> Pay</a>
+                </div>
+                <br>
+            </div>
+            <div class="col-lg-6" style="padding-bottom: 30px">
+                <div class="box-element">
+                    <a class="btn btn-outline-dark" href="{% url 'USERAPP:cart' %}"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Basket</a>
+                    <hr>
+                    <h3>Order Summary</h3>
+                    <hr>
+                    {% for product_ in products %}
+                        <div class="cart-row">
+                            <div style="flex:2"><a href="{% url 'PRODUCTS:product-details' product_.product.slug %}"><img
+                                    class="row-image cart-product-image"
+                                    style="padding:10px;cursor: pointer"
+                                    src="{{ product_.product.product_image.url }}"></a></div>
+                            <div style="flex:2">
+                                <a href="{% url 'PRODUCTS:product-details' product_.product.slug %}" style="text-decoration: none">
+                                    <p>{{ product_.product.product_title }}
+                                </a>
+                                </p>
+                            </div>
+                            <div style="flex:1">
+                                <p>{{ product_.product.product_price }}</p>
+                            </div>
+                            <div style="flex:1">
+                                <p>x{{ product_.amount }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <h5>Products: </h5>
+                    <h5>
+                        Total Price:
+                        <strong>
+                            <h4 style="display: inline;">₺ {{ total }}</h4>
+                        </strong>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock BODY %}
